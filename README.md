@@ -1,1 +1,1 @@
-Exchange code with others.
+Exchange code with others and some course practice code.
