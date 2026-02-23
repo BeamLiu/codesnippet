@@ -112,12 +112,7 @@ def prepare_data_batch():
     batch = torch.stack(batch, dim=0)
     return batch
 
-batch = prepare_data_batch()
-print(batch)
-torch.manual_seed(123)
-
-model = GPTModel(GPT_CONFIG_124M)
-def model_size_calculation(model: GPTModel):
+def model_size_calculation(model: GPTModel, batch: torch.Tensor):
     out = model(batch)
     print("Input batch:\n", batch)
     print("\nOutput shape:", out.shape)
@@ -137,8 +132,7 @@ def model_size_calculation(model: GPTModel):
         f"considering weight tying: {total_params_gpt2:,}"
     )
 
-print('-' * 50)
-model_size_calculation(model)
+
 
 def generate_text_simple(model, idx,
     max_new_tokens, context_size):
@@ -171,5 +165,15 @@ def try_text_generation(text: str, model: GPTModel):
     decoded_text = tokenizer.decode(out[0].tolist())
     print("Output text(Without training):", decoded_text)
 
-print('-' * 50)
-try_text_generation("Hello, I am", model)
+if __name__ == "__main__":
+    batch = prepare_data_batch()
+    print(batch)
+    torch.manual_seed(123)
+    
+    model = GPTModel(GPT_CONFIG_124M)
+    
+    print('-' * 50)
+    model_size_calculation(model, batch)
+
+    print('-' * 50)
+    try_text_generation("Hello, I am", model)

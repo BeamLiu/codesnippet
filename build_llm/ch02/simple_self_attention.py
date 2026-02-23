@@ -33,11 +33,7 @@ class SelfAttention_v1(nn.Module):
 
         return context_vec
 
-d_in = inputs.shape[1]
-d_out = 2
-torch.manual_seed(123)
-sa_v1 = SelfAttention_v1(d_in, d_out)
-print(f"SelfAttention_v1 output:\n{sa_v1(inputs)}")
+
 
 
 class SelfAttention_v2(nn.Module):
@@ -59,10 +55,7 @@ class SelfAttention_v2(nn.Module):
         context_vec = attn_weights @ values
         return context_vec
 
-torch.manual_seed(789)
-sa_v2 = SelfAttention_v2(d_in, d_out)
-print('-' * 50)
-print(f"SelfAttention_v2 output:\n{sa_v2(inputs)}")
+
 
 def causal_attention_mask():
     queries = sa_v2.W_query(inputs)
@@ -84,7 +77,7 @@ def causal_attention_mask():
     masked_simple_norm = masked_simple / row_sums
     print(f"masked_simple_norm:\n{masked_simple_norm}")
 
-causal_attention_mask()
+
 
 
 class CausalAttention(nn.Module):
@@ -120,19 +113,7 @@ class CausalAttention(nn.Module):
         context_vec = attn_weights @ values
         return context_vec
 
-print('-' * 50)
-batch = torch.stack((inputs, inputs), dim=0)
-print(f"batch.shape: {batch.shape}")
 
-torch.manual_seed(123)
-
-context_length = batch.shape[1]
-ca = CausalAttention(d_in, d_out, context_length, 0.0)
-
-context_vecs = ca(batch)
-
-print(f"single-head attention context_vecs:\n{context_vecs}")
-print("context_vecs.shape:", context_vecs.shape)
 
 
 
@@ -200,13 +181,41 @@ class MultiHeadAttention(nn.Module):
 
         return context_vec
 
-torch.manual_seed(123)
+if __name__ == "__main__":
+    d_in = inputs.shape[1]
+    d_out = 2
+    torch.manual_seed(123)
+    sa_v1 = SelfAttention_v1(d_in, d_out)
+    print(f"SelfAttention_v1 output:\n{sa_v1(inputs)}")
 
-batch_size, context_length, d_in = batch.shape
-d_out = 2
-mha = MultiHeadAttention(d_in, d_out, context_length, 0.0, num_heads=2)
+    torch.manual_seed(789)
+    sa_v2 = SelfAttention_v2(d_in, d_out)
+    print('-' * 50)
+    print(f"SelfAttention_v2 output:\n{sa_v2(inputs)}")
 
-context_vecs = mha(batch)
-print('-' * 50)
-print(f"multi-head attention context_vecs:\n{context_vecs}")
-print("context_vecs.shape:", context_vecs.shape)
+    causal_attention_mask()
+
+    print('-' * 50)
+    batch = torch.stack((inputs, inputs), dim=0)
+    print(f"batch.shape: {batch.shape}")
+
+    torch.manual_seed(123)
+
+    context_length = batch.shape[1]
+    ca = CausalAttention(d_in, d_out, context_length, 0.0)
+
+    context_vecs = ca(batch)
+
+    print(f"single-head attention context_vecs:\n{context_vecs}")
+    print("context_vecs.shape:", context_vecs.shape)
+
+    torch.manual_seed(123)
+
+    batch_size, context_length, d_in = batch.shape
+    d_out = 2
+    mha = MultiHeadAttention(d_in, d_out, context_length, 0.0, num_heads=2)
+
+    context_vecs = mha(batch)
+    print('-' * 50)
+    print(f"multi-head attention context_vecs:\n{context_vecs}")
+    print("context_vecs.shape:", context_vecs.shape)
