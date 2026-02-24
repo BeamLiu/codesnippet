@@ -68,8 +68,6 @@ def load_data(train_ratio=0.9):
     print("All tokens:", train_tokens + val_tokens)
     return train_loader, val_loader
 
-train_loader, val_loader = load_data()
-
 def calc_loss_batch(input_batch, target_batch, model, device):
     input_batch, target_batch = input_batch.to(device), target_batch.to(device)
     logits = model(input_batch)
@@ -168,7 +166,7 @@ if __name__ == "__main__":
     device = choose_device()
     model.to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.0004, weight_decay=0.1)
-
+    train_loader, val_loader = load_data()
     num_epochs = 10
     train_losses, val_losses, tokens_seen = train_model_simple(
         model, train_loader, val_loader, optimizer, device,
