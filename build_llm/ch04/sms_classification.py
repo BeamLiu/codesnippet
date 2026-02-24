@@ -219,9 +219,10 @@ def main():
 
     gpt = load_gpt2_small_weights()
     update_last_n_layers(gpt, n=2)
+    gpt.to(choose_device())
 
     inputs = tokenizer.encode("Do you have time")
-    inputs = torch.tensor(inputs).unsqueeze(0)
+    inputs = torch.tensor(inputs).unsqueeze(0).to(choose_device())
     print("-" * 50)
     print("Inputs:", inputs)
     print("Inputs dimensions:", inputs.shape)
