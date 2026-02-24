@@ -2,11 +2,14 @@ import json
 import os
 import torch
 import tiktoken
+import sys
 from pathlib import Path
 from safetensors.torch import load_file
 from huggingface_hub import hf_hub_download, snapshot_download
-from gpt_model_network import GPTModel, GPT_CONFIG_124M
-from gpt_model_pretrain import text_to_token_ids, token_ids_to_text
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ch03.gpt_model_network import GPTModel, GPT_CONFIG_124M
+from ch03.gpt_model_pretrain import text_to_token_ids, token_ids_to_text
 
 #"gpt2-small (124M)" refere to https://huggingface.co/openai-community/gpt2/blob/main/config.json
 model_configs = {
@@ -133,8 +136,13 @@ def choose_device():
     print(f"Using {device} device.")
     return device
 
-def load_gpt2_small_weights(cfg):
-    gpt = GPTModel(cfg)
+tokenizer = tiktoken.get_encoding("gpt2")
+NEW_CONFIG = GPT_CONFIG_124M.copy()
+NEW_CONFIG.update(model_configs["gpt2-small (124M)"])
+NEW_CONFIG.update({"context_length": 1024, "qkv_bias": True})
+
+def load_gpt2_small_weights():
+    gpt = GPTModel(NEW_CONFIG)
     print(gpt)
 
     repo_id = "openai-community/gpt2"
@@ -149,21 +157,15 @@ def load_gpt2_small_weights(cfg):
     weights_dict = load_file(weights_file)
     load_weights_into_gpt(gpt, weights_dict)
 
+    gpt.to(choose_device())
     return gpt
 
 if __name__ == "__main__":
     torch.manual_seed(123)
-    tokenizer = tiktoken.get_encoding("gpt2")
-    model_name = "gpt2-small (124M)"  # Example model name
-    NEW_CONFIG = GPT_CONFIG_124M.copy()
-    NEW_CONFIG.update(model_configs[model_name])
-    NEW_CONFIG.update({"context_length": 1024, "qkv_bias": True})
-    gpt = load_gpt2_small_weights(NEW_CONFIG)
-    device = choose_device()
-    gpt.to(device)
+    gpt = load_gpt2_small_weights()
     token_ids = generate(
         model=gpt,
-        idx=text_to_token_ids("Every effort moves you", tokenizer).to(device),
+        idx=text_to_token_ids("Every effort moves you", tokenizer).to(choose_device()),
         max_new_tokens=25,
         context_size=NEW_CONFIG["context_length"],
         top_k=50,

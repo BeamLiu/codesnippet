@@ -1,6 +1,9 @@
 import tiktoken
 import torch
-from gpt_model_network import GPTModel, generate_text_simple
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ch03.gpt_model_network import GPTModel, generate_text_simple
 from ch01.tokenization import DataDownloader, create_dataloader_v1
 
 GPT_CONFIG_124M = {
