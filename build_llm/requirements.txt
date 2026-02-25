@@ -10,3 +10,4 @@ psutil >= 5.9.5            # ch07; already installed automatically as dependency
 huggingface_hub >= 1.4.1   # ch03
 safetensors >= 0.7.0       # ch03
 transformers >= 4.40.0     # ch03
+accelerate >= 1.1.0        # ch04
