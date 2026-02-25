@@ -1,0 +1,43 @@
+
+
+Using cuda device.
+Found local directory: models/Qwen3-0.6B-Base
+--------------------------------------------------
+Loading tokenizer...
+Loading base model...
+Loading weights: 100% 310/310 [00:00<00:00, 943.89it/s, Materializing param=model.norm.weight]
+Qwen3ForSequenceClassification LOAD REPORT from: models/Qwen3-0.6B-Base
+Key          | Status  | 
+-------------+---------+-
+score.weight | MISSING | 
+
+Notes:
+- MISSING	:those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+--------------------------------------------------
+Applying LoRA weights from models/qwen_0.6b_lora_sms...
+--------------------------------------------------
+Running Inference Test Cases:
+Test case 1:
+"Congratulations! You've won a $1,000 Walmart gift card. Call 09061790121 now to claim your prize."
+Prediction: ======> SPAM <======
+----------------------------------------
+Test case 2:
+"Hey, what time are we meeting for dinner today?"
+Prediction: ======> HAM <======
+----------------------------------------
+Test case 3:
+"URGENT: Your bank account has been locked. Click the link below to verify your identity."
+Prediction: ======> SPAM <======
+----------------------------------------
+Test case 4:
+"Can you send over the report when you have a minute?"
+Prediction: ======> HAM <======
+----------------------------------------
+Test case 5:
+"Win £1000 cash! Text WIN to 89999 for your chance. T&Cs apply."
+Prediction: ======> SPAM <======
+----------------------------------------
+Test case 6:
+"Sounds good, I'll see you at 6!"
+Prediction: ======> HAM <======
+----------------------------------------
