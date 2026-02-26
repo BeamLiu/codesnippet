@@ -11,3 +11,6 @@ huggingface_hub >= 1.4.1   # ch03
 safetensors >= 0.7.0       # ch03
 transformers >= 4.40.0     # ch03
 accelerate >= 1.1.0        # ch04
+kagglehub >= 1.0.0         # style_midi
+pretty_midi>=0.2.10        # style_midi
+tensorboard>=2.15.0        # style_midi
