@@ -44,12 +44,12 @@ class REMITokenizer:
             
         # 2. Condition tokens (Prefix)
         composers = ["beethoven", "chopin", "mozart", "schubert"]
-        moods = ["energetic", "lyrical", "melancholic", "playful"]
-        tempos = ["largo", "andante", "moderato", "allegro", "presto"]
+        continuous_buckets = [f"{i/10:.1f}" for i in range(11)]
         keys = ["C_major", "G_major", "D_major", "A_major", "E_major", "B_major", "F#_major", "Db_major", "Ab_major", "Eb_major", "Bb_major", "F_major",
                 "A_minor", "E_minor", "B_minor", "F#_minor", "C#_minor", "G#_minor", "D#_minor", "Bb_minor", "F_minor", "C_minor", "G_minor", "D_minor"]
         
-        for pfix, items in [("COMPOSER", composers), ("MOOD", moods), ("TEMPO", tempos), ("KEY", keys)]:
+        # We rename MOOD to VELOCITY since it strictly represents physical key velocity 
+        for pfix, items in [("COMPOSER", composers), ("VELOCITY", continuous_buckets), ("TEMPO", continuous_buckets), ("DENSITY", continuous_buckets), ("KEY", keys)]:
             for item in items:
                 self._add_token(f"[{pfix}:{item}]")
 

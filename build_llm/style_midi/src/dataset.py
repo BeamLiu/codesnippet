@@ -3,7 +3,6 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from typing import List, Tuple
 import os
-import kagglehub
 
 from tokenizer import REMITokenizer
 
@@ -65,9 +64,3 @@ def get_dataloader(data_dir: str, batch_size: int, seq_len: int, stride: int = 5
     # Using small dataloader workers for simple test
     return DataLoader(dataset, batch_size=batch_size, shuffle=(split == "train"), num_workers=0)
 
-def download_dataset():
-    output_dir = "./data/maestro"
-    if not os.path.exists(output_dir):
-        kagglehub.dataset_download("kritanjalijain/maestropianomidi", output_dir=output_dir)
-    else:
-        print("Dataset already exists!")
