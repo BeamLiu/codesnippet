@@ -11,7 +11,7 @@ from model import StyleMIDIModel, ModelConfig
 from dataset import get_dataloader
 from tokenizer import REMITokenizer
 
-def get_lr(it: int, warmup_steps: int = 750, max_steps: int = 7500, max_lr: float = 3e-4, min_lr: float = 3e-5):
+def get_lr(it: int, warmup_steps: int = 750, max_steps: int = 7500, max_lr: float = 6e-4, min_lr: float = 3e-5):
     """Cosine learning rate decay with warmup."""
     if it < warmup_steps:
         return max_lr * (it + 1) / warmup_steps
@@ -30,7 +30,7 @@ def train():
     parser.add_argument("--seq-len", type=int, default=1024, help="Sequence length")
     parser.add_argument("--data-dir", type=str, default="./data/maestro/tokens", help="Directory with processed token sequences")
     parser.add_argument("--ckpt-dir", type=str, default="./checkpoints", help="Directory to save checkpoints")
-    parser.add_argument("--save-every", type=int, default=50, help="Steps between checkpoints")
+    parser.add_argument("--save-every", type=int, default=500, help="Steps between checkpoints")
     args = parser.parse_args()
 
     os.makedirs(args.ckpt_dir, exist_ok=True)
@@ -63,8 +63,15 @@ def train():
     model = StyleMIDIModel(config).to(device)
     print(f"Model params: {model.get_num_params() / 1e6:.2f}M")
 
-    # Optimizer
-    optimizer = AdamW(model.parameters(), lr=0.0, weight_decay=0.1, betas=(0.9, 0.95))
+    # Optimizer config to properly separate weight decay
+    param_dict = {pn: p for pn, p in model.named_parameters() if p.requires_grad}
+    decay_params = [p for n, p in param_dict.items() if p.dim() >= 2]
+    nodecay_params = [p for n, p in param_dict.items() if p.dim() < 2]
+    optim_groups = [
+        {'params': decay_params, 'weight_decay': 0.1},
+        {'params': nodecay_params, 'weight_decay': 0.0}
+    ]
+    optimizer = AdamW(optim_groups, lr=0.0, betas=(0.9, 0.95))
     scaler = torch.amp.GradScaler('cuda', enabled=(device.type == 'cuda'))
     
     # Tensorboard logger
@@ -96,7 +103,13 @@ def train():
     pbar = tqdm(total=args.steps if not args.smoke_test else min(100, args.steps), desc="Training")
     
     while step < args.steps:
-        x, y = next(data_iter)
+        try:
+            x, y = next(data_iter)
+        except StopIteration:
+            #End of dataset, restarting.
+            data_iter = iter(dataloader)
+            x, y = next(data_iter)
+            
         x, y = x.to(device), y.to(device)
         
         # update LR
