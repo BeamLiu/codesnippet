@@ -16,15 +16,7 @@ from scripts.analyze_conditions import plot_condition_distributions
 def download_dataset():
     output_dir = "./data/maestro"
     if not os.path.exists(output_dir):
-        try:
-            # Users may have specified output_dir in earlier snippets, 
-            # preserving the original logic intention while preventing errors.
-            path = kagglehub.dataset_download("kritanjalijain/maestropianomidi")
-            print(f"Downloaded to cache: {path}")
-            print("Please ensure the dataset is moved/extracted to ./data/maestro/maestro-v3.0.0")
-        except TypeError:
-            # fallback if output_dir is supported
-            kagglehub.dataset_download("kritanjalijain/maestropianomidi", output_dir=output_dir)
+        kagglehub.dataset_download("kritanjalijain/maestropianomidi", output_dir=output_dir)
     else:
         print("Dataset directory already exists!")
 
