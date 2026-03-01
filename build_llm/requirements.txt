@@ -14,3 +14,6 @@ accelerate >= 1.1.0        # ch04
 kagglehub >= 1.0.0         # style_midi
 pretty_midi>=0.2.10        # style_midi
 tensorboard>=2.15.0        # style_midi
+fastapi>=0.111.0           # style_midi frontend backend
+uvicorn>=0.30.0            # style_midi frontend backend
+python-multipart>=0.0.9    # style_midi frontend backend

@@ -1,0 +1,76 @@
+@import './styles/vars.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-dark);
+  /* Fixed from --bg-main to --bg-dark */
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  height: 100vh;
+  padding: 24px;
+  gap: 24px;
+  width: 100%;
+  /* Expand to fill width */
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  #root {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+/* Custom Scrollbar for a polished look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Magenta visualizer dark theme overrides */
+midi-visualizer {
+  display: block;
+  width: 100%;
+}
+
+midi-visualizer svg {
+  width: 100% !important;
+}
+
+midi-visualizer .staff-line path {
+  stroke: var(--border-color) !important;
+}
+
+midi-visualizer .note path {
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+}
+
+midi-visualizer .note.active path {
+  fill: var(--accent-orange) !important;
+  stroke: var(--accent-orange) !important;
+}

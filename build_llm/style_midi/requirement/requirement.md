@@ -54,7 +54,6 @@ StyleMIDI 是一个从零实现的风格化音乐生成系统，基于 Transform
 - 可选：FluidSynth 渲染 .mid 为 .mp3
 
 ### **2.1.5 Web Demo 模块**
-- 框架：Gradio（部署简单，支持 Hugging Face Spaces 一键上线）
 - 用户界面：下拉选择作曲家、调性；提供宏观的“情绪”预设选项（如欢快、忧郁），在底层映射为具体的「力度、密度、速度」滑动条组合，用户也可以直接微调 `0.0~1.0` 的连续值滑动条，点击生成
 - 结果展示：音频播放器 + 钢琴卷帘可视化（HTML Canvas 或 html-midi-player）
 - 可下载生成的 .mid 文件
@@ -82,7 +81,7 @@ StyleMIDI 是一个从零实现的风格化音乐生成系统，基于 Transform
 |数据层|MIDI 解析 → REMI 编码 → Dataset|pretty\_midi, miditok, torch.utils.data|
 |模型层|Transformer Decoder（从零实现）|PyTorch（纯手写，不用 nn.Transformer）|
 |推理层|条件采样 → MIDI 生成|PyTorch CPU, pretty\_midi, FluidSynth|
-|展示层|Web Demo + 可视化|Gradio, html-midi-player, matplotlib|
+|展示层|Web 界面 + 可视化|React, Vite, html-midi-player, matplotlib|
 
 ## **3.2 REMI 编码方案**
 REMI（Revamped MIDI）将连续的 MIDI 事件离散化为 token 序列，是本项目的核心数据表示。
@@ -162,7 +161,8 @@ Token 类型一共五类：
 |src/generate.py|推理脚本，条件采样 + MIDI 输出|
 |src/visualize.py|注意力热图、风格插值实验可视化|
 |scripts/extract_features.py|自动在 MAESTRO 数据集上做数据挖掘（调性估算、情绪与速度特征提取）脚本|
-|app/demo.py|Gradio Web Demo 入口|
+|api/server.py|FastAPI 后端 API 服务入口|
+|style_midi_ui/|React 前端交互界面项目代码|
 |scripts/convert\_mp3.py|MP3 → MIDI 转换脚本（调用 Basic Pitch）|
 |notebooks/experiments.ipynb|Temperature 对比、风格插值等实验记录|
 |checkpoints/|训练 checkpoint 存放目录|
@@ -179,7 +179,8 @@ Token 类型一共五类：
 |MIDI 编码|miditok|REMI 编码参考实现（可自己重写）|
 |音频转换|Basic Pitch (Spotify)|MP3 → MIDI 转换|
 |音频渲染|FluidSynth|MIDI → MP3 渲染，用于演示|
-|Web Demo|Gradio|交互界面，支持一键部署到 HF Spaces|
+|后端 API|FastAPI + Uvicorn|提供模型推理接口，与前端进行数据交互|
+|前端 UI|React + Vite|现代化的 Web 交互界面，负责参数调整及音乐可视化|
 |可视化|matplotlib / html-midi-player|注意力热图 + 钢琴卷帘动画|
 |实验记录|TensorBoard|训练 loss 曲线实时监控|
 |环境管理|conda / pip|requirements.txt 保证可复现|

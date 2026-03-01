@@ -100,9 +100,11 @@ def generate_music(
     # 3. Decode Tokens to MIDI
     output_pm = tokenizer.decode(input_ids)
     
+    import time
     # Save MIDI
-    os.makedirs("../samples", exist_ok=True)
-    out_path = f"../samples/generated_{conditions.get('COMPOSER', 'unknown')}_{conditions.get('MOOD', 'unknown')}.mid"
+    os.makedirs(os.path.abspath(os.path.join(os.path.dirname(__file__), '../samples')), exist_ok=True)
+    timestamp = int(time.time())
+    out_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../samples/generated_{conditions.get('COMPOSER', 'unknown')}_{timestamp}.mid"))
     output_pm.write(out_path)
     
     return out_path

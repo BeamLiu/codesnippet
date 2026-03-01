@@ -2,5 +2,6 @@ build_llm/LLM-TRAN
 build_llm/models
 build_llm/ch01/the-verdict.txt
 build_llm/data
+build_llm/style_midi/samples
 **/__pycache__
 **/venv
