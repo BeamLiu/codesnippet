@@ -62,7 +62,7 @@ const resources = {
                 "title": "试听",
             },
             "visualizer": {
-                "sheet_music": "五线谱演示",
+                "sheet_music": "五线谱",
                 "piano_roll": "钢琴卷帘"
             }
         }

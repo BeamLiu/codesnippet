@@ -14,6 +14,7 @@ def generate_music(
     max_duration: float = 30.0,
     temperature: float = 1.0,
     top_p: float = 0.9,
+    top_k: int = 50,
     device: str = "cpu"
 ) -> str:
     """Generate MIDI sequence based on conditions."""
@@ -47,9 +48,16 @@ def generate_music(
         # next token is the last prediction
         next_token_logits = logits[0, -1, :]
         
-        # Top-p (nucleus) sampling
+        # Top-p (nucleus) and Top-k sampling
         if temperature > 0.0:
             next_token_logits = next_token_logits / temperature
+            
+            # top-k filtering
+            if top_k > 0:
+                k = min(top_k, next_token_logits.size(-1))
+                val, _ = torch.topk(next_token_logits, k)
+                next_token_logits[next_token_logits < val[-1]] = float('-inf')
+                
             probs = F.softmax(next_token_logits, dim=-1)
             
             # top-p filtering

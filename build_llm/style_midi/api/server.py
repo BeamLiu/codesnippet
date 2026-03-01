@@ -37,6 +37,8 @@ class GenerateRequest(BaseModel):
     density: float
     tempo: float
     duration: float
+    temperature: float = 1.4
+    top_k: int = 20
 
 @app.on_event("startup")
 async def startup_event():
@@ -91,8 +93,9 @@ async def generate_endpoint(req: GenerateRequest):
             tokenizer=tokenizer,
             conditions=conds,
             max_duration=req.duration,
-            temperature=1.0,  # can expose this if needed
+            temperature=req.temperature,
             top_p=0.9,
+            top_k=req.top_k,
             device=device
         )
         

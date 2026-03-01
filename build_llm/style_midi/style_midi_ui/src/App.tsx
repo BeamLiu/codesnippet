@@ -15,7 +15,9 @@ function App() {
     velocity: 50,
     density: 60,
     tempo: 120,
-    duration: 30
+    duration: 30,
+    temperature: 1.0,
+    top_k: 50
   });
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -62,7 +64,9 @@ function App() {
           velocity: config.velocity / 100, // normalize to 0-1 for backend
           density: config.density / 100,
           tempo: config.tempo / 100,
-          duration: config.duration
+          duration: config.duration,
+          temperature: config.temperature,
+          top_k: config.top_k
         })
       });
 

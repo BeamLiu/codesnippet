@@ -2,7 +2,8 @@ import React from 'react';
 import * as Select from '@radix-ui/react-select';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 import * as Slider from '@radix-ui/react-slider';
-import { ChevronDown } from 'lucide-react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { ChevronDown, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import styles from './ConfigurationPanel.module.css';
 
@@ -14,6 +15,8 @@ interface ConfigState {
     density: number;
     tempo: number;
     duration: number;
+    temperature: number;
+    top_k: number;
 }
 
 interface Props {
@@ -74,6 +77,37 @@ export const ConfigurationPanel: React.FC<Props> = ({ config, onChange, onGenera
                     </svg>
                     <h1>StyleMIDI</h1>
                 </div>
+                <Dialog.Root>
+                    <Dialog.Trigger asChild>
+                        <button className={styles.advancedBtn} aria-label="Advanced Settings">
+                            <Settings size={18} />
+                        </button>
+                    </Dialog.Trigger>
+                    <Dialog.Portal>
+                        <Dialog.Overlay className={styles.dialogOverlay} />
+                        <Dialog.Content className={styles.dialogContent}>
+                            <Dialog.Title className={styles.dialogTitle}>Advanced Settings</Dialog.Title>
+                            <Dialog.Description className={styles.dialogDesc}>
+                                Configure underlying LLM parameters.
+                            </Dialog.Description>
+
+                            <CustomSlider
+                                label="Temperature"
+                                value={config.temperature}
+                                onChange={handleSliderChange('temperature')}
+                                max={2}
+                                step={0.1}
+                            />
+                            <CustomSlider
+                                label="Top-K"
+                                value={config.top_k}
+                                onChange={handleSliderChange('top_k')}
+                                max={100}
+                                step={1}
+                            />
+                        </Dialog.Content>
+                    </Dialog.Portal>
+                </Dialog.Root>
             </div>
 
             <div className={styles.sectionTitle}>{t('config.title').toUpperCase()}</div>
@@ -153,13 +187,13 @@ const CustomSelect = ({ value, onChange, options, placeholder }: any) => (
     </Select.Root>
 );
 
-const CustomSlider = ({ label, value, onChange, max, unit = "", displayValue, bottomLabel }: any) => (
+const CustomSlider = ({ label, value, onChange, max, step = 1, unit = "", displayValue, bottomLabel }: any) => (
     <div className={styles.sliderContainer}>
         <div className={styles.sliderHeader}>
             <span className={styles.sliderLabel}>{label}</span>
             <span className={styles.sliderValue}>{displayValue || `${value}${unit}`}</span>
         </div>
-        <Slider.Root className={styles.sliderRoot} value={[value]} max={max} step={1} onValueChange={onChange}>
+        <Slider.Root className={styles.sliderRoot} value={[value]} max={max} step={step} onValueChange={onChange}>
             <Slider.Track className={styles.sliderTrack}>
                 <Slider.Range className={styles.sliderRange} />
             </Slider.Track>
