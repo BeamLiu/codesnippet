@@ -9,6 +9,16 @@ StyleMIDI is a stylized music generation system built entirely from scratch base
 
 ---
 
+## 📸 Demo & Screenshots
+
+<p align="center">
+  <img src="media/screen1.png" width="49%" />
+  <img src="media/screen2.png" width="49%" />
+</p>
+<p align="center">
+  <video src="media/video.mp4" width="100%" controls="controls"></video>
+</p>
+
 ## 🌟 Core Features
 
 - **Built from Scratch**: Fully implements a Transformer Decoder including Multi-Head Attention, RoPE (Rotary Position Embedding), and KV Cache.
@@ -90,6 +100,16 @@ python src/train.py
 StyleMIDI 是一个从零实现的风格化音乐生成系统，基于 Transformer 架构，能够学习指定作曲家（如贝多芬、肖邦）的创作风格，并根据结构化文本条件（作曲家、情绪、速度、调性）自动生成对应风格的 MIDI 音乐。
 
 ---
+
+## 📸 界面演示
+
+<p align="center">
+  <img src="media/screen1.png" width="49%" />
+  <img src="media/screen2.png" width="49%" />
+</p>
+<p align="center">
+  <video src="media/video.mp4" width="100%" controls="controls"></video>
+</p>
 
 ## 🌟 核心特性
 
