@@ -1,0 +1,106 @@
+.container {
+    display: flex;
+    overflow: hidden;
+    flex: 1;
+    min-height: 400px;
+    width: 100%;
+    position: relative;
+    background-color: var(--bg-element);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}
+
+.keyboard {
+    width: 60px;
+    flex-shrink: 0;
+    overflow: hidden;
+    /* Programmatically scrolled */
+    position: relative;
+    background: #111;
+    z-index: 10;
+    border-right: 1px solid var(--border-color);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.keyRow {
+    height: 16px;
+    box-sizing: border-box;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.keyWhite {
+    background: #e0e0e0;
+    width: 100%;
+    border-radius: 2px 0 0 2px;
+    box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+.keyBlack {
+    background: #222;
+    width: 65%;
+    border-radius: 0 4px 4px 0;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.05), inset 0 -2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.trackScroll {
+    flex-grow: 1;
+    overflow: auto;
+    position: relative;
+    background-color: #1f1f26;
+}
+
+.trackContent {
+    position: relative;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 100%;
+    /* approx beat size rendering */
+}
+
+.gridBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.gridLine {
+    height: 16px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.gridLineDark {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.note {
+    position: absolute;
+    height: 12px;
+    margin-top: 2px;
+    border-radius: 3px;
+    z-index: 2;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.2s;
+    opacity: 0.85;
+}
+
+.note:hover {
+    opacity: 1;
+    filter: brightness(1.2);
+    z-index: 3;
+}
+
+.playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--accent-orange);
+    z-index: 10;
+    box-shadow: 0 0 10px var(--accent-orange);
+    pointer-events: none;
+    transition: left 0.1s linear;
+}

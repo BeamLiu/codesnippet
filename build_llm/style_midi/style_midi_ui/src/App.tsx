@@ -16,8 +16,8 @@ function App() {
     density: 60,
     tempo: 120,
     duration: 30,
-    temperature: 1.0,
-    top_k: 50
+    temperature: 1.4,
+    top_k: 25
   });
 
   const [isGenerating, setIsGenerating] = useState(false);

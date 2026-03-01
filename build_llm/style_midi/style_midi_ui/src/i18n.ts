@@ -24,7 +24,11 @@ const resources = {
                 "tempo": "Tempo",
                 "duration": "Duration",
                 "generate": "Generate Music",
-                "generating": "Generating..."
+                "generating": "Generating...",
+                "advanced": "Advanced Settings",
+                "advanced_desc": "Configure underlying LLM parameters.",
+                "temperature": "Temperature",
+                "top_k": "Top-K"
             },
             "player": {
                 "title": "Audio Player",
@@ -56,7 +60,11 @@ const resources = {
                 "tempo": "速度",
                 "duration": "生成时长",
                 "generate": "一键生成音乐",
-                "generating": "生成中..."
+                "generating": "生成中...",
+                "advanced": "高级设置",
+                "advanced_desc": "配置底层 LLM 采样参数。",
+                "temperature": "Temperature (采样温度)",
+                "top_k": "Top-K (采样截断)"
             },
             "player": {
                 "title": "试听",

@@ -60,9 +60,13 @@
     outline: none;
     height: 100%;
     padding: 24px;
-    display: flex;
+    display: none;
     flex-direction: column;
     overflow: auto;
+}
+
+.tabsContent[data-state='active'] {
+    display: flex;
 }
 
 .emptyState,

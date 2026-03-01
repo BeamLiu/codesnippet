@@ -37,7 +37,7 @@ export const VisualizerTabs: React.FC<Props> = ({ midiUrl, xmlUrl, playbackTime,
                     </Tabs.Content>
                     <Tabs.Content className={styles.tabsContent} value="piano">
                         {midiUrl ? (
-                            <PianoRollContainer midiUrl={midiUrl} />
+                            <PianoRollContainer midiUrl={midiUrl} playbackTime={playbackTime} />
                         ) : (
                             <div className={styles.emptyState}>No music generated yet.</div>
                         )}

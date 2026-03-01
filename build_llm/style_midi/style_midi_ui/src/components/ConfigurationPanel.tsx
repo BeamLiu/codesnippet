@@ -86,20 +86,20 @@ export const ConfigurationPanel: React.FC<Props> = ({ config, onChange, onGenera
                     <Dialog.Portal>
                         <Dialog.Overlay className={styles.dialogOverlay} />
                         <Dialog.Content className={styles.dialogContent}>
-                            <Dialog.Title className={styles.dialogTitle}>Advanced Settings</Dialog.Title>
+                            <Dialog.Title className={styles.dialogTitle}>{t('config.advanced')}</Dialog.Title>
                             <Dialog.Description className={styles.dialogDesc}>
-                                Configure underlying LLM parameters.
+                                {t('config.advanced_desc')}
                             </Dialog.Description>
 
                             <CustomSlider
-                                label="Temperature"
+                                label={t('config.temperature')}
                                 value={config.temperature}
                                 onChange={handleSliderChange('temperature')}
                                 max={2}
                                 step={0.1}
                             />
                             <CustomSlider
-                                label="Top-K"
+                                label={t('config.top_k')}
                                 value={config.top_k}
                                 onChange={handleSliderChange('top_k')}
                                 max={100}
