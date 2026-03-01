@@ -11,7 +11,7 @@ def generate_music(
     model: StyleMIDIModel,
     tokenizer: REMITokenizer,
     conditions: Dict[str, str],
-    max_new_tokens: int = 512,
+    max_duration: float = 30.0,
     temperature: float = 1.0,
     top_p: float = 0.9,
     device: str = "cpu"
@@ -36,7 +36,11 @@ def generate_music(
     kv_caches = None
     start_pos = 0
     
-    for _ in range(max_new_tokens):
+    current_bar = 0
+    current_time_sec = 0.0
+    sec_per_bar = 4.0 * (60.0 / 120.0)  # default tempo 120 bpm, 4/4 time
+    
+    for _ in range(20000):  # hard limit to prevent infinite loops
         # We only pass the new token(s) and the current kv_caches
         logits, _, kv_caches = model(x, kv_caches=kv_caches, start_pos=start_pos)
         
@@ -73,6 +77,18 @@ def generate_music(
         
         if next_token.item() == tokenizer.eos_token_id:
             print("Hit EOS token, stopping generation.")
+            break
+            
+        token_str = tokenizer.idx_to_str.get(next_token.item(), "")
+        if token_str == "Bar_None":
+            current_bar += 1
+            current_time_sec = current_bar * sec_per_bar
+        elif token_str.startswith("Position_"):
+            pos = int(token_str.split("_")[1])
+            current_time_sec = current_bar * sec_per_bar + (pos / tokenizer.positions_per_bar) * sec_per_bar
+            
+        if current_time_sec >= max_duration:
+            print(f"Reached max duration {max_duration}s, stopping generation.")
             break
             
         # prepare for next iteration

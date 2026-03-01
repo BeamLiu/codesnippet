@@ -15,7 +15,7 @@ def test_generate_smoke(ckpt_path=""):
     
     if ckpt_path and os.path.exists(ckpt_path):
         print(f"Loading checkpoint {ckpt_path}")
-        checkpoint = torch.load(ckpt_path, map_location="cpu")
+        checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=False)
         model.load_state_dict(checkpoint['model_state_dict'])
     else:
         print("Warning: No checkpoint provided. Output will be noise.")
@@ -25,8 +25,9 @@ def test_generate_smoke(ckpt_path=""):
     
     conds = {
         "COMPOSER": "beethoven",
-        "MOOD": "energetic",
-        "TEMPO": "allegro",
+        "VELOCITY": "0.4",
+        "TEMPO": "0.5",
+        "DENSITY": "0.4",
         "KEY": "C_major"
     }
     
@@ -35,16 +36,17 @@ def test_generate_smoke(ckpt_path=""):
         model=model,
         tokenizer=tokenizer,
         conditions=conds,
-        max_new_tokens=100, 
-        temperature=1.0,
-        top_p=0.9,
+        max_duration=30.0, # Generate 15 seconds of audio
+        temperature=1.1,
+        top_p=0.95,
         device=device
     )
     print(f"Saved to: {midi_path}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ckpt", type=str, default="", help="Path to model checkpoint")
+    default_ckpt = os.path.abspath(os.path.join(os.path.dirname(__file__), '../result/model_step_7500.pt'))
+    parser.add_argument("--ckpt", type=str, default=default_ckpt, help="Path to model checkpoint")
     args = parser.parse_args()
     
     test_generate_smoke(args.ckpt)
