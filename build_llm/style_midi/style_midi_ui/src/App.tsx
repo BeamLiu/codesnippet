@@ -7,6 +7,7 @@ import './index.css';
 
 function App() {
   const { t, i18n } = useTranslation();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
   const [config, setConfig] = useState({
     composer: 'ludwig van beethoven',
@@ -52,8 +53,8 @@ function App() {
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
-      // In development, the Vite proxy or absolute URL to FastAPI backend
-      const response = await fetch('http://localhost:8000/api/generate', {
+      // Use configured API base URL instead of hardcoded localhost
+      const response = await fetch(`${API_BASE_URL}/api/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -76,10 +77,10 @@ function App() {
 
       const data = await response.json();
 
-      // Update URLs with localhost:8000 prefix since backend runs there
-      if (data.audio_url) setAudioUrl(`http://localhost:8000${data.audio_url}`);
-      if (data.midi_url) setMidiUrl(`http://localhost:8000${data.midi_url}`);
-      if (data.xml_url) setXmlUrl(`http://localhost:8000${data.xml_url}`);
+      // Update URLs with dynamic API_BASE_URL prefix instead of hardcoded localhost
+      if (data.audio_url) setAudioUrl(`${API_BASE_URL}${data.audio_url}`);
+      if (data.midi_url) setMidiUrl(`${API_BASE_URL}${data.midi_url}`);
+      if (data.xml_url) setXmlUrl(`${API_BASE_URL}${data.xml_url}`);
 
     } catch (error) {
       console.error(error);
