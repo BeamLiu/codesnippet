@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Analytics } from '@vercel/analytics/react';
 import { ConfigurationPanel } from './components/ConfigurationPanel';
 import { AudioPlayer } from './components/AudioPlayer';
 import { VisualizerTabs } from './components/Visualizers/VisualizerTabs';
@@ -116,6 +117,7 @@ function App() {
         <AudioPlayer title={t('player.title')} audioUrl={audioUrl} onTimeUpdate={setPlaybackTime} />
         <VisualizerTabs midiUrl={midiUrl} xmlUrl={xmlUrl} playbackTime={playbackTime} tempo={config.tempo} />
       </div>
+      <Analytics />
     </>
   );
 }
