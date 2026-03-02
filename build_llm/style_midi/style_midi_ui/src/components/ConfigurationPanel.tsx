@@ -154,6 +154,12 @@ export const ConfigurationPanel: React.FC<Props> = ({ config, onChange, onGenera
             <CustomSlider label={t('config.duration')} value={config.duration} onChange={handleSliderChange('duration')} max={120} displayValue={`${config.duration} s`} bottomLabel="Full Track" />
 
             <button className={styles.generateButton} onClick={onGenerate} disabled={isGenerating}>
+                {isGenerating && (
+                    <svg className={styles.spinner} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeOpacity="0.3" />
+                        <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+                    </svg>
+                )}
                 {isGenerating ? t('config.generating') : t('config.generate')}
             </button>
         </div>

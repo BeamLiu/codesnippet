@@ -16,7 +16,7 @@ function App() {
     velocity: 50,
     density: 60,
     tempo: 120,
-    duration: 30,
+    duration: 20,
     temperature: 1.4,
     top_k: 25
   });
