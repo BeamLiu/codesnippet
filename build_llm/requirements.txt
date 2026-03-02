@@ -17,3 +17,4 @@ tensorboard>=2.15.0        # style_midi
 fastapi>=0.111.0           # style_midi frontend backend
 uvicorn>=0.30.0            # style_midi frontend backend
 python-multipart>=0.0.9    # style_midi frontend backend
+music21>=9.9.1             # style_midi frontend backend

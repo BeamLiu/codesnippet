@@ -1,0 +1,16 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/:match*",
+            "destination": "http://8.134.38.136:8000/api/:match*"
+        },
+        {
+            "source": "/samples/:match*",
+            "destination": "http://8.134.38.136:8000/samples/:match*"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}
